@@ -1,2 +1,2 @@
-# Sarchasm
-Learn sarcasm on twitter
+# CrySmile
+Emoji analysis on Twitter

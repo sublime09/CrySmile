@@ -1,0 +1,19 @@
+Features:
+	***** Emoji id ******
+	Tweet Length
+	Cleaned tweet text: (ha+ -> haha)
+	relative emoji location 
+	Has media
+	Retweets
+	Sentiment + Activation + Dominance
+		ANEW lexicon (Bradley & Lang, 1999)
+	De Choudhury's features
+		LIWC (proprietary boo!)
+	Word2Vec Or Doc2Vec.  https://radimrehurek.com/gensim/
+	http://www.nltk.org/
+	https://streamhacker.com/2010/06/16/text-classification-sentiment-analysis-eliminate-low-information-features/
+
+Target:
+	Classify single emoji into its muliple meanings using context
+
+One or two topics?: ONE

@@ -1,0 +1,10 @@
+emojiDict = 
+'''
+CrySmile 😂
+Heart ❤ \ufe0f \u2764
+Coffee ☕ \u2615
+'''
+
+
+
+

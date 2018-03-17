@@ -14,3 +14,7 @@ def processDataFrames():
 			print("columns:", df.columns)
 			print("\tshape=", df.shape, " size=", df.size)
 			print(df[0:10])
+
+
+if __name__ == '__main__':
+	processDataFrames()

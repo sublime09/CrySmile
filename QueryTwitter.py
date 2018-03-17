@@ -70,3 +70,8 @@ def jsonToDataFrame(jsonResult):
 	df.insert(1, 'screen_name', screen_names, True)
 
 	return df
+
+
+if __name__ == '__main__':
+	results = doQueries()
+	saveQueryResults(results)

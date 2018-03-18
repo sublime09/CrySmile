@@ -1,3 +1,5 @@
+from twython import Twython
+
 # This is the name of an emoji followed by all of it's appearances
 emojisRaw = '''
 CrySmile 😂
@@ -21,7 +23,7 @@ for line in emojiList:
 
 
 def ask(*question):
-	question = ' '.join(question)
+	question = ' '.join([str(q) for q in question])
 	print(question)
 	response = input("(yes/no) >>>")
 	response = response.strip().lower()
@@ -29,3 +31,13 @@ def ask(*question):
 		print("ASSUMING NO")
 	return response == "yes"
 
+
+def getTwitter():
+	# reading the secrets....
+	secretFilename = 'secret.txt'
+	with open(secretFilename, 'r') as f:
+		APP_KEY = f.readline().strip()
+		APP_SECRET = f.readline().strip()
+		ACCESS_TOKEN = f.readline().strip()
+	twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+	return twitter

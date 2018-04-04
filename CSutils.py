@@ -8,8 +8,8 @@ Cry 😢
 SmileSmile 😊
 Fire 🔥
 ThumbsUp 👍
-# Heart ❤ \ufe0f \u2764
-# Coffee ☕ \u2615
+Heart ❤ \ufe0f \u2764
+Coffee ☕ \u2615
 '''
 
 emojiDict = dict()

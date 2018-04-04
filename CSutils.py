@@ -2,29 +2,28 @@ from twython import Twython
 
 # This is the name of an emoji followed by all of it's appearances
 emojisRaw = '''
-CrySmile 😂
-Heart ❤ \ufe0f \u2764
-Coffee ☕ \u2615
+CrySmile 😂 U+1F602
+LoudCry 😭
+Cry 😢
+SmileSmile 😊
+Fire 🔥
+ThumbsUp 👍
+# Heart ❤ \ufe0f \u2764
+# Coffee ☕ \u2615
 '''
 
-emojiList = emojisRaw.split('\n')
-while '' in emojiList:
-	emojiList.remove('')
-
 emojiDict = dict()
-
-for line in emojiList:
-	line = line.strip().split(" ")
-	if len(line) == 0:
+for line in emojisRaw.split('\n'):
+	if line.isspace() or line == "":
 		continue
-	keyName = line[0]
-	valuesList = line[1:]
-	emojiDict[keyName] = valuesList
+	emojiName = line.split()[0]
+	emojiSymbol = line.split()[1]
+	emojiDict[emojiName] = emojiSymbol
 
 
 def ask(*question):
-	question = ' '.join([str(q) for q in question])
-	print(question)
+	# question = ' '.join([str(q) for q in question])
+	print(*question)
 	response = input("(yes/no) >>>")
 	response = response.strip().lower()
 	if response not in ['yes', 'no']:
@@ -41,3 +40,11 @@ def getTwitter():
 		ACCESS_TOKEN = f.readline().strip()
 	twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
 	return twitter
+
+
+def printDictLevels(d, base=''):
+	for key in d:
+		if type(d[key]) == type(dict()):
+			printDictLevels(d[key], base+"["+key+"]")
+		else:
+			print(base, ":", d[key], sep='')

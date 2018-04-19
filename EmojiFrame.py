@@ -21,31 +21,29 @@ class EmojiFrame:
 		self.frame = DataFrame(data=goodData)
 		print("EmojiFrame created:", emojiName)
 
-
 	def save(self, filepath=None):
 		if filepath == None:
 			filepath = 'data'+os.path.sep+"ef_"+self.emojiName+'.p'
-		fileObject = open(filepath, "wb")
-		pickle.dump(self, fileObject)
-		fileObject.close()
+		with open(filepath, "wb") as fileObject:
+			pickle.dump(self, fileObject)
 		print("Saved:", filepath)
-
 
 	def __repr__(self):
 		output = list()
-		output.append("%"*60+"The "+self.emojiName+" EmojiFrame:")
-		# output.append("Shape:"+str(self.frame.shape))
-		with pandas.option_context('display.max_rows', 10, 'display.width', 160):
+		width = 120
+		title = ' ' + self.emojiName+" EmojiFrame" + ' '
+		filler = '@'* int((width - len(title)) / 2)
+		output.append(filler + title + filler)
+		with pandas.option_context('display.max_rows', 10, 'display.width', width):
 			output.append(repr(self.frame))
 		return '\n'.join(output)
-
 
 	def getGoodData(self, rawFrame: DataFrame):
 		goodData = dict()
 		goodData['tweetID'] = rawFrame['id']
 		goodData['dateCreated'] = rawFrame['created_at']
 		rawTweets = rawFrame['full_text']
-		# goodData['rawTweet'] = rawTweets
+		goodData['rawTweet'] = rawTweets
 		goodData['userName'] = [d['screen_name'] for d in rawFrame['user']]
 		try:
 			goodData['rtID'] = rawFrame["retweeted_status"]["id"]
@@ -53,7 +51,7 @@ class EmojiFrame:
 		except:
 			pass
 		goodData['cleanTweet'] = [cleanTweet(t) for t in rawTweets]
-		goodData['isRetweet'] = [t.startswith("RT ") for t in rawTweets]
+		goodData['isRetweet'] = ["RT " in t for t in rawTweets]
 		return goodData
 
 def cleanTweet(tweet: str):

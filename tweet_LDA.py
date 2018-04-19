@@ -5,12 +5,9 @@
 # how to interpret LDA results???
 # For the Future....
 
-
-
-
-
 import nltk
-# nltk.download()
+nltk.download('wordnet')
+nltk.download('stopwords')
 from nltk.corpus import stopwords 
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
@@ -23,8 +20,7 @@ import re
 
 from nltk import word_tokenize,sent_tokenize
 from itertools import filterfalse
-from collections import OrderedDict
-
+from collections import OrderedDict	
 
 stop = set(stopwords.words('english'))
 exclude = set(string.punctuation) 
@@ -43,7 +39,7 @@ with codecs.open('tweets.emojis-EN-#metoo_2017-1016_n28629.csv', "r",encoding='u
 		sent = filter(None, re.split("[, \\n\.?]+", row['text']))
 		# print(re.findall(r"[\w']+", sent))
 		# nltk.word_tokenize(sent)
-		porter = nltk.PorterStemmer()
+		# porter = nltk.PorterStemmer()
 		newsent = []
 		for t in sent:
 			if t.startswith('co/'):
@@ -89,7 +85,7 @@ print(doc_term_matrix)
 # Creating the object for LDA model using gensim library
 Lda = gensim.models.ldamodel.LdaModel
 
-# Running and Trainign LDA model on the document term matrix.
+# Running and Training LDA model on the document term matrix.
 ldamodel = Lda(doc_term_matrix, num_topics=3, id2word = dictionary, passes=100)
 			
 print(ldamodel.print_topics(num_topics=3, num_words=10))

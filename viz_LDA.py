@@ -35,8 +35,7 @@ DC={}
 for x in range (10):
   data = pd.DataFrame({columns[0]:"",
                      columns[1]:"",
-                     columns[2]:"",
-                                                                                      
+                     columns[2]:"",                                                
                     },index=[0])
   df=df.append(data,ignore_index=True)  
     
@@ -59,8 +58,8 @@ for line in topicWordProbMat:
            last_number=last_number+1
         y=y+1
 
-print (df)
-print (zz)
+print(df)
+print(zz)
 print(DC)
 
 zz=np.resize(zz,(len(DC.keys()),zz.shape[1]))

@@ -22,7 +22,6 @@ for line in emojisRaw.split('\n'):
 
 
 def ask(*question):
-	# question = ' '.join([str(q) for q in question])
 	print(*question)
 	response = input("(yes/no) >>>")
 	response = response.strip().lower()

@@ -1,4 +1,4 @@
-import os, pandas, pickle
+import re, os, pandas, pickle
 from pandas import DataFrame, read_pickle
 from CSutils import emojiDict, ask
 
@@ -56,20 +56,23 @@ class EmojiFrame:
 		goodData['isRetweet'] = [t.startswith("RT ") for t in rawTweets]
 		return goodData
 
-
-def cleanTweet(rawTweet: str):
-	rawTweet = rawTweet.lstrip("RT ")
-	rawTweet = rawTweet.strip()
-	for emojiSymbol in emojiDict.values():
-		if emojiSymbol not in rawTweet:
-			continue
-		while emojiSymbol*10 in rawTweet:
-			rawTweet = rawTweet.replace(emojiSymbol*10, emojiSymbol*5)
-		while emojiSymbol*5 in rawTweet:
-			rawTweet = rawTweet.replace(emojiSymbol*5, emojiSymbol*4)
-	# todo: remove punctuation
-	return rawTweet
-
+def cleanTweet(tweet: str):
+	urlPattern = '\\b(http|co/)\S*\\b'
+	tweet = re.sub(urlPattern, '', tweet)
+	retweetPattern = '\\bRT\\b'
+	tweet = re.sub(retweetPattern, '', tweet)
+	emojis = emojiDict.values()
+	for emojiSymbol in emojis:
+		replaceWith = emojiSymbol*3 
+		pattern = emojiSymbol*2 + "+"
+		tweet = re.sub(pattern, replaceWith, tweet)
+	# maybe punct: # @ $ &
+	punctPattern = '(\.|\,|\:|\;|\!)+'
+	tweet = re.sub(punctPattern, '', tweet)
+	extraSpacePattern = '\s\s+'
+	tweet = re.sub(extraSpacePattern, ' ', tweet)
+	tweet = tweet.strip()
+	return tweet
 
 if __name__ == '__main__':
 	main()

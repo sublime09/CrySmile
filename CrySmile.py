@@ -1,5 +1,7 @@
 import QueryTwitter
-import EmojiFrame
+import EmojiFrame as EF
+from EmojiFrame import EmojiFrame
+import Clustering
 
 	# ''' ########### REMEMBER: #################'''
 # '''MAX Number of Search Requests within 15-min window: 450'''
@@ -8,7 +10,8 @@ import EmojiFrame
 
 def main():
 	QueryTwitter.main()
-	EmojiFrame.main()
+	EF.main()
+	Clustering.main()
 
 
 if __name__ == '__main__':

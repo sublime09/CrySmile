@@ -26,11 +26,15 @@ def millis():
 def getTwitter():
 	# reading the secrets....
 	secretFilename = 'secret.txt'
-	with open(secretFilename, 'r') as f:
-		APP_KEY = f.readline().strip()
-		APP_SECRET = f.readline().strip()
-		ACCESS_TOKEN = f.readline().strip()
-	twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+	try:
+		with open(secretFilename, 'r') as f:
+			APP_KEY = f.readline().strip()
+			APP_SECRET = f.readline().strip()
+			ACCESS_TOKEN = f.readline().strip()
+		twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+	except Exception as e:
+		print("Missing or invalid", secretFilename, "... exiting...")
+		exit()
 	return twitter
 
 def cleanTweet(tweet: str):

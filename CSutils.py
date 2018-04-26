@@ -1,5 +1,6 @@
-from twython import Twython
+import re
 from time import time
+from twython import Twython
 
 # This is the name of an emoji followed its symbol
 emojiDict = dict()

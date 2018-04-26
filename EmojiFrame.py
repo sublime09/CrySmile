@@ -1,6 +1,6 @@
 import re, os, pandas, pickle
 from pandas import DataFrame, read_pickle
-from CSutils import emojiDict, ask
+from CSutils import emojiDict, ask, cleanTweet, millis
 
 def main():
 	if ask("Make EmojiFrames?"):
@@ -65,24 +65,6 @@ def getAllEmojiFrames():
 			eFrames.append(eFrame)
 	return eFrames
 
-
-def cleanTweet(tweet: str):
-	urlPattern = '\\b(http|co/)\S*\\b'
-	tweet = re.sub(urlPattern, '', tweet)
-	retweetPattern = '\\bRT\\b'
-	tweet = re.sub(retweetPattern, '', tweet)
-	emojis = emojiDict.values()
-	for emojiSymbol in emojis:
-		replaceWith = emojiSymbol*3 
-		pattern = emojiSymbol*2 + "+"
-		tweet = re.sub(pattern, replaceWith, tweet)
-	# maybe punct: # @ $ &
-	punctPattern = '(\.|\,|\:|\;|\!)+'
-	tweet = re.sub(punctPattern, '', tweet)
-	extraSpacePattern = '\s\s+'
-	tweet = re.sub(extraSpacePattern, ' ', tweet)
-	tweet = tweet.strip()
-	return tweet
 
 if __name__ == '__main__':
 	main()

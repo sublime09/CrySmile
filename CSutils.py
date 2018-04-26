@@ -1,4 +1,5 @@
 from twython import Twython
+from time import time
 
 # This is the name of an emoji followed its symbol
 emojiDict = dict()
@@ -19,6 +20,8 @@ def ask(*question):
 		print("ASSUMING NO")
 	return response == "yes"
 
+def millis():
+	return round(time() * 1000)
 
 def getTwitter():
 	# reading the secrets....
@@ -30,6 +33,23 @@ def getTwitter():
 	twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
 	return twitter
 
+def cleanTweet(tweet: str):
+	urlPattern = '\\b(http|co/)\S*\\b'
+	tweet = re.sub(urlPattern, '', tweet)
+	retweetPattern = '\\bRT\\b'
+	tweet = re.sub(retweetPattern, '', tweet)
+	emojis = emojiDict.values()
+	for emojiSymbol in emojis:
+		replaceWith = emojiSymbol*3 
+		pattern = emojiSymbol*2 + "+"
+		tweet = re.sub(pattern, replaceWith, tweet)
+	# maybe punct: # @ $ &
+	punctPattern = '(\.|\,|\:|\;|\!)+'
+	tweet = re.sub(punctPattern, '', tweet)
+	extraSpacePattern = '\s\s+'
+	tweet = re.sub(extraSpacePattern, ' ', tweet)
+	tweet = tweet.strip()
+	return str(tweet)
 
 def printDictLevels(d, base=''):
 	for key in d:

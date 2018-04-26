@@ -102,10 +102,5 @@ ENV/
 
 # mypy
 .mypy_cache/
-data/Coffee.p
-data/CrySmile.p
-data/Fire.p
-data/Heart.p
-data/LoudCry.p
-data/SmileSmile.p
-data/ThumbsUp.p
+
+data/RawTwitterDataframes/*

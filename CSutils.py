@@ -1,25 +1,15 @@
 from twython import Twython
 
-# This is the name of an emoji followed by all of it's appearances
-emojisRaw = '''
-CrySmile 😂 U+1F602
-LoudCry 😭
-Cry 😢
-SmileSmile 😊
-Fire 🔥
-ThumbsUp 👍
-Heart ❤ \ufe0f \u2764
-Coffee ☕ \u2615
-'''
-
+# This is the name of an emoji followed its symbol
 emojiDict = dict()
-for line in emojisRaw.split('\n'):
-	if line.isspace() or line == "":
-		continue
-	emojiName = line.split()[0]
-	emojiSymbol = line.split()[1]
-	emojiDict[emojiName] = emojiSymbol
-
+emojiDict['CrySmile']   = '😂'
+emojiDict['LoudCry']    = '😭'
+emojiDict['Cry']        = '😢'
+emojiDict['SmileSmile'] = '😊'
+emojiDict['Fire']       = '🔥'
+emojiDict['ThumbsUp']   = '👍'
+emojiDict['Heart']      = '❤'
+emojiDict['Coffee']     = '☕'
 
 def ask(*question):
 	print(*question)

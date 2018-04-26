@@ -12,11 +12,11 @@ import seaborn as sns
 warnings.filterwarnings("ignore")
 
 # pyLDAvis.enable_notebook()
-d = gensim.corpora.Dictionary.load('dictionary.dict')
-c = gensim.corpora.MmCorpus('corpus.mm')
+gensimDict = gensim.corpora.Dictionary.load('dictionary.dict')
+gensimCorpus = gensim.corpora.MmCorpus('corpus.mm')
 lda = gensim.models.LdaModel.load('topic.model')
 topicWordProbMat = lda.print_topics(3)
-data = pyLDAvis.gensim.prepare(lda, c, d)
+data = pyLDAvis.gensim.prepare(lda, gensimCorpus, gensimDict)
 pyLDAvis.save_html(data,'vis.html')
 
 print(topicWordProbMat)
@@ -33,30 +33,30 @@ last_number=0
 DC={}
 
 for x in range (10):
-  data = pd.DataFrame({columns[0]:"",
-                     columns[1]:"",
-                     columns[2]:"",                                                
-                    },index=[0])
-  df=df.append(data,ignore_index=True)  
-    
+	data = pd.DataFrame({columns[0]:"",
+						 columns[1]:"",
+						 columns[2]:"",                                                
+						},index=[0])
+	df=df.append(data,ignore_index=True)  
+		
 for line in topicWordProbMat:
-    
-    tp, w = line
-    probs=w.split("+")
-    y=0
-    for pr in probs:
-               
-        a=pr.split("*")
-        df.iloc[y,tp] = a[1]
-       
-        if a[1] in DC:
-        	print(a[1])
-        	zz[DC[a[1]]][tp]=a[0]
-        else:
-           zz[last_number][tp]=a[0]
-           DC[a[1]]=last_number
-           last_number=last_number+1
-        y=y+1
+		
+		tp, w = line
+		probs=w.split("+")
+		y=0
+		for pr in probs:
+							 
+				a=pr.split("*")
+				df.iloc[y,tp] = a[1]
+			 
+				if a[1] in DC:
+					print(a[1])
+					zz[DC[a[1]]][tp]=a[0]
+				else:
+					 zz[last_number][tp]=a[0]
+					 DC[a[1]]=last_number
+					 last_number=last_number+1
+				y=y+1
 
 print(df)
 print(zz)
@@ -82,11 +82,11 @@ plt.show()
 # for i in range(3):
 #     df=pd.DataFrame(lda.show_topic(i), columns=['term','prob']).set_index('term')
 # #     df=df.sort_values('prob')
-    
+		
 #     plt.subplot(1,3,i+1)
 #     plt.title('topic '+str(i+1))
 #     sns.barplot(x='prob', y=df.index, data=df, label='Cities', palette='Reds_d')
 #     plt.xlabel('probability')
-    
+		
 
 # plt.show()

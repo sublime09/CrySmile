@@ -6,7 +6,7 @@ from CSutils import emojiDict, getTwitter, ask
 # ''' ########### REMEMBER: #################'''
 # '''MAX Number of Search Requests within 15-min window: 450'''
 # '''We will get BLACKLISTED if we abuse the Twitter API'''
-# ''' The secret file is NOT PUBLIC to avoid abuse of our Twitter access'''
+# ''' The secret file is NOT PUBLIC to avoid abuse of our Twitter access by attackers'''
 
 def main():
 	if ask("Do Full Query Process?"):
@@ -52,7 +52,7 @@ class QueryTwitter:
 	def saveDataFrame(self, filepath=None):
 		df = self.getDataFrame()
 		if filepath == None:
-			filepath = 'data'+os.path.sep+self.name+'.p'
+			filepath = os.path.sep.join(['data', 'RawTwitterDataframes', self.name+'.p'])
 		if os.path.isfile(filepath):
 			print("Saving UPDATE", filepath, "...", end='')
 			oldDF = read_pickle(filepath)
@@ -67,7 +67,6 @@ class QueryTwitter:
 
 
 def doQueryProcess(processTime=3600):
-	# maxQsecRate = (180 / 15.0) / 60.0
 	maxQsecRate = (400 / 15.0) / 60.0
 	totalQueries = int(maxQsecRate * processTime)
 	sleepSeconds = processTime / float(totalQueries)
@@ -105,8 +104,6 @@ def smallTest():
 	# 	text = str(df['full_text'][i])
 	# 	print(text[:90], "......")
 	print()
-	# filepath = 'data'+os.path.sep+"TEST"+self.name+'.p'
-	# qt.saveDataFrame(filepath)
 
 
 if __name__ == '__main__':

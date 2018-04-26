@@ -5,7 +5,7 @@ from CSutils import emojiDict, ask
 def main():
 	if ask("Make EmojiFrames?"):
 		for emojiName in emojiDict:
-			filepath = 'data'+os.path.sep+emojiName+'.p'
+			filepath = os.path.sep.join(['data', 'RawTwitterDataframes', emojiName+'.p'])
 			if os.path.isfile(filepath):
 				rawFrame = read_pickle(filepath)
 				ef = EmojiFrame(emojiName, rawFrame)
@@ -23,7 +23,7 @@ class EmojiFrame:
 
 	def save(self, filepath=None):
 		if filepath == None:
-			filepath = 'data'+os.path.sep+"ef_"+self.emojiName+'.p'
+			filepath = os.path.sep.join(['data', 'EmojiFrames', 'ef_'+self.emojiName+'.p'])
 		with open(filepath, "wb") as fileObject:
 			pickle.dump(self, fileObject)
 		print("Saved:", filepath)

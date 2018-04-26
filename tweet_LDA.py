@@ -32,7 +32,9 @@ doc_completed = []
 # Tweet preprocessing--- one tweet for each iteration and store all the preprocessed tweets in doc_completed.
 # As long as all the collected tweets can be read and processed using the for loop below, you don't need to worry about the LDA part, 
 # which starts with the list containing all processed tweets ----- doc_completed
-with codecs.open('tweets.emojis-EN-#metoo_2017-1016_n28629.csv', "r",encoding='utf-8', errors='ignore') as fdata:
+filename = 'tweets.emojis-EN-#metoo_2017-1016_n28629.csv'
+filepath = 'data\\StaticExistingDatasets\\'
+with codecs.open(filepath + filename, "r",encoding='utf-8', errors='ignore') as fdata:
 	reader = csv.DictReader(fdata)
 	for row in reader:
 		print(row['tweetid'])

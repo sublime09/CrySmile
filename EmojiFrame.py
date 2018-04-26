@@ -48,7 +48,8 @@ class EmojiFrame:
 		self.emojiSymbol = emojiDict[emojiName]
 		goodData = self.getGoodData(rawDataFrame)
 		self.frame = DataFrame(data=goodData)
-		print("EmojiFrame created:", emojiName)
+		self.dropDuplicateTweets()
+		print("EmojiFrame created:", emojiName, "with shape", self.frame.shape)
 
 	def shape(self):
 		return self.frame.shape
@@ -58,6 +59,12 @@ class EmojiFrame:
 
 	def getCleanTweetsList(self):
 		return self.getCleanTweets().values.tolist()
+
+	def dropDuplicateTweets(self):
+		grandTotalTweets = self.frame.shape[0]
+		self.frame.drop_duplicates(subset='cleanTweet', inplace=True)
+		droppedTweets = self.frame.shape[0] - grandTotalTweets
+		print("Dropped", droppedTweets, "duplicate tweets")
 
 	def save(self, filepath=None):
 		if filepath == None:

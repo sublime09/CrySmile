@@ -20,9 +20,10 @@ def main():
 
 def cluster(eFrame: EmojiFrame):
 	# dropping duplicate tweets (Retweets) removes half of tweets
-	print("Before:", eFrame.frame.shape)
+	grandTotalTweets = eFrame.frame.shape[0]
 	eFrame.frame.drop_duplicates(subset='cleanTweet', inplace=True)
-	print("After:", eFrame.frame.shape)
+	droppedTweets = eFrame.frame.shape[0] - grandTotalTweets
+	print("Dropped", droppedTweets, "duplicate tweets")
 
 	# ids = eFrame.frame['tweetID'].values.tolist()
 	# cleanTweets = eFrame.frame['cleanTweet'].values.tolist()

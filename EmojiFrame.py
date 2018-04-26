@@ -14,7 +14,10 @@ def main():
 				if ask("Save this EmojiFrame?"):
 					eFrame.save()
 	elif ask("See existing EmojiFrames?"):
-		eFrames = getAllEmojiFrames()
+		start = millis()
+		print("Loading EmojiFrames takes... ", end='')
+		eFrames = list(getAllEmojiFrames())
+		print(millis()-start, "ms", sep='')
 		for ef in eFrames:
 			print("EmojiFrame:", ef.emojiName, "shape is", ef.frame.shape)
 
@@ -29,18 +32,14 @@ def getEmojiFramesFromRaw():
 			yield ef
 
 def getAllEmojiFrames():
-	start = millis()
-	print("Loading EmojiFrames takes... ", end='')
-	efFolder = os.path.join('.', 'data', 'EmojiFrames')
-	efFiles = os.listdir(path=efFolder)
-	efFiles = [os.path.join(efFolder, fname) for fname in efFiles]
+	efFiles = os.listdir(path=saveFolder)
 	eFrames = list()
-	for efFilename in efFiles:
-		with open(efFilename, 'rb') as fileObj:
-			eFrame = pickle.load(fileObj)	
-			eFrames.append(eFrame)
-	print(millis()-start, "ms", sep='')
-	return eFrames
+	for fname in efFiles:
+		if re.match("ef_.*\\.p", fname):
+			filepath = os.path.join(saveFolder, fname)
+			with open(filepath, 'rb') as fileObj:
+				eFrame = pickle.load(fileObj)	
+				yield eFrame
 
 class EmojiFrame:
 	def __init__(self, emojiName, rawDataFrame):

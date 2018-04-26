@@ -14,7 +14,7 @@ emojiDict['Coffee']     = '☕'
 
 def ask(*question):
 	print(*question)
-	response = input("(yes/no) >>>")
+	response = input("(yes/no) >>> ")
 	response = response.strip().lower()
 	if response not in ['yes', 'no']:
 		print("ASSUMING NO")

@@ -4,23 +4,20 @@
 # understand the meaning of relevance term 
 # how to interpret LDA results???
 # For the Future....
+import csv, re, string, codecs
+from itertools import filterfalse
+from collections import OrderedDict	
 
 import nltk
 nltk.download('wordnet')
 nltk.download('stopwords')
 from nltk.corpus import stopwords 
 from nltk.stem.wordnet import WordNetLemmatizer
-import string
-import codecs
+from nltk import word_tokenize,sent_tokenize
+
 import gensim
 from gensim import corpora
 
-import csv
-import re
-
-from nltk import word_tokenize,sent_tokenize
-from itertools import filterfalse
-from collections import OrderedDict	
 
 stop = set(stopwords.words('english'))
 exclude = set(string.punctuation) 
@@ -33,8 +30,8 @@ doc_completed = []
 # As long as all the collected tweets can be read and processed using the for loop below, you don't need to worry about the LDA part, 
 # which starts with the list containing all processed tweets ----- doc_completed
 filename = 'tweets.emojis-EN-#metoo_2017-1016_n28629.csv'
-filepath = 'data\\StaticExistingDatasets\\'
-with codecs.open(filepath + filename, "r",encoding='utf-8', errors='ignore') as fdata:
+filepath = os.path.join('data', 'StaticExistingDatasets', filename)
+with codecs.open(filepath, "r",encoding='utf-8', errors='ignore') as fdata:
 	reader = csv.DictReader(fdata)
 	for row in reader:
 		print(row['tweetid'])

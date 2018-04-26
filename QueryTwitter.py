@@ -52,7 +52,7 @@ class QueryTwitter:
 	def saveDataFrame(self, filepath=None):
 		df = self.getDataFrame()
 		if filepath == None:
-			filepath = os.path.sep.join(['data', 'RawTwitterDataframes', self.name+'.p'])
+			filepath = os.path.join('data', 'RawTwitterDataframes', self.name+'.p')
 		if os.path.isfile(filepath):
 			print("Saving UPDATE", filepath, "...", end='')
 			oldDF = read_pickle(filepath)

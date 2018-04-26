@@ -54,6 +54,18 @@ class EmojiFrame:
 		goodData['isRetweet'] = ["RT " in t for t in rawTweets]
 		return goodData
 
+def getAllEmojiFrames():
+	efFolder = os.path.join('.', 'data', 'EmojiFrames')
+	efFiles = os.listdir(path=efFolder)
+	efFiles = [os.path.join(efFolder, fname) for fname in efFiles]
+	eFrames = list()
+	for efFilename in efFiles:
+		with open(efFilename, 'rb') as fileObj:
+			eFrame = pickle.load(fileObj)	
+			eFrames.append(eFrame)
+	return eFrames
+
+
 def cleanTweet(tweet: str):
 	urlPattern = '\\b(http|co/)\S*\\b'
 	tweet = re.sub(urlPattern, '', tweet)

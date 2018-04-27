@@ -26,7 +26,7 @@ def main():
 
 def getRawTwitterDataFrames():
 	for fname in rawDFFilenames:
-		filepath = os.path.join(folder, fname)
+		filepath = os.path.join(saveFolder, fname)
 		rawFrame = read_pickle(filepath)
 		yield (fname, rawFrame)
 

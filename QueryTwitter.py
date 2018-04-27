@@ -10,7 +10,6 @@ from CSutils import emojiDict, getTwitter, ask, millis
 # ''' The secret file is NOT PUBLIC to avoid abuse of our Twitter access by attackers'''
 
 saveFolder = os.path.join('.', 'data', 'RawTwitterDataframes')
-rawDFFilenames = os.listdir(path=saveFolder)
 
 def main():
 	if ask("Query Twitter for Emojis?"):
@@ -27,10 +26,14 @@ def main():
 
 
 def getRawTwitterDataFrames():
+	rawDFFilenames = os.listdir(path=saveFolder)
 	for fname in rawDFFilenames:
-		filepath = os.path.join(saveFolder, fname)
-		rawFrame = read_pickle(filepath)
-		yield (fname, rawFrame)
+		if fname.split('.')[0] in emojiDict:
+			filepath = os.path.join(saveFolder, fname)
+			rawFrame = read_pickle(filepath)
+			yield (fname, rawFrame)
+		else:
+			print("Can't tell if emoji:", fname)
 
 
 class QueryTwitter:
@@ -50,6 +53,7 @@ class QueryTwitter:
 
 	def doQuery(self):
 		# self.qParams['q'] = self.query
+		self.result = 111
 		jsonResult = self.twitter.search(q=self.query, **self.qParams)
 		self.result = jsonResult
 
@@ -65,19 +69,18 @@ class QueryTwitter:
 		df = DataFrame.from_dict(tweetRows)
 		return df
 
-
-	def saveDataFrame(self, filepath=None):
+	def saveDataFrame(self, folder=saveFolder):
+		filename = self.name + ".p"
+		filepath = os.path.join(folder, filename)
 		df = self.getDataFrame()
-		if filepath == None:
-			filepath = os.path.join(saveFolder, self.name + '.p')
 		if os.path.isfile(filepath):
-			print("Saving UPDATE", filepath, "...", end='')
+			print("Saving UPDATE", filename, "...", end='')
 			oldDF = read_pickle(filepath)
 			df = df.append(oldDF)
 		else:
 			print("Saving NEW", filepath, "...", end='')
-
 		df.drop_duplicates(subset='id', inplace=True)
+		print("shape is", df.shape, end=' ')
 		df.to_pickle(filepath)
 		print("Done!")
 

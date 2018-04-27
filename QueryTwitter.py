@@ -30,8 +30,14 @@ def getRawTwitterDataFrames():
 	for fname in rawDFFilenames:
 		if fname.split('.')[0] in emojiDict:
 			filepath = os.path.join(saveFolder, fname)
-			rawFrame = read_pickle(filepath)
-			yield (fname, rawFrame)
+			try:
+				rawFrame = read_pickle(filepath)
+				yield (fname, rawFrame)
+			except Exception as e:
+				print("Error in reading as DataFrame:", fname)
+				print("Error: ", e)
+				print("Skipping...")
+				continue
 		else:
 			print("Can't tell if emoji:", fname)
 

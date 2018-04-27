@@ -39,8 +39,13 @@ def getExistingEmojiFrames():
 		if re.match("ef_.*\\.p", fname):
 			filepath = os.path.join(saveFolder, fname)
 			with open(filepath, 'rb') as fileObj:
-				eFrame = pickle.load(fileObj)	
-				yield eFrame
+				try:
+					eFrame = pickle.load(fileObj)
+					yield eFrame
+				except Exception as e:
+					print("Error while loading EmojiFrame:", fname)
+					print("Error:", e)
+					print("Skipping".ljust(70, "."))
 
 class EmojiFrame:
 	def __init__(self, emojiName, rawDataFrame):

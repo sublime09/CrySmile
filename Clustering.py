@@ -35,21 +35,6 @@ def cluster(eFrame: EmojiFrame):
 	eFrame.frame['setmmedTokens'] = stemmedCol
 	eFrame.frame['tweetTokens'] = twTokenCol
 
-	# tokenVocab = set()
-	# stemmedVocab = set()
-	# tweetVocab = set()
-	# for tokens in eFrame.frame['basicTokens']:
-	# 	tokenVocab.update(tokens)
-	# for tokens in eFrame.frame['setmmedTokens']:
-	# 	stemmedVocab.update(tokens)
-	# for tokens in eFrame.frame['tweetTokens']:
-	# 	tweetVocab.update(tokens)
-	# #vocab_frame = pandas.DataFrame({'words': tokenVocab}, index = stemmedVocab)
-	# print('There are', str(vocab_frame.shape[0]), 'items in vocab_frame')
-	# print("Basic Token vocab:", len(tokenVocab))
-	# print("Stemmed vocab:", len(stemmedVocab))
-	# print("Tweet vocab:", len(tweetVocab))
-
 	cleanTweetsList = [str(x) for x in eFrame.getCleanTweetsList()]
 
 	start = millis()

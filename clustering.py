@@ -51,14 +51,12 @@ def cluster(eFrame: EmojiFrame):
 	# print("Stemmed vocab:", len(stemmedVocab))
 	# print("Tweet vocab:", len(tweetVocab))
 
+	cleanTweetsList = [str(x) for x in eFrame.getCleanTweetsList()]
+
 	start = millis()
 	print("Fitting TFIDF takes... ", end='')
+	sys.stdout.flush()
 	#define vectorizer parameters
-	cleanTweetsList = [str(x) for x in eFrame.getCleanTweetsList()]
-	# for t in cleanTweetsList:
-	# 	a = str(t)
-
-	# stopwords = nltk.corpus.stopwords.words('english') # same as option below
 	opts = dict(max_features=200, use_idf=True)
 	opts.update(dict(stop_words='english', ngram_range=(1,3)))
 	opts['tokenizer'] = lambda x: tweetTokenize(x)

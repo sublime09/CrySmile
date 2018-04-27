@@ -37,7 +37,6 @@ def getRawTwitterDataFrames():
 
 
 class QueryTwitter:
-	twitter = getTwitter()
 	# default parameters for a query:
 	qParams = dict(count='100', \
 		lang='en', \
@@ -54,7 +53,8 @@ class QueryTwitter:
 	def doQuery(self):
 		# self.qParams['q'] = self.query
 		self.result = 111
-		jsonResult = self.twitter.search(q=self.query, **self.qParams)
+		twitter = getTwitter()
+		jsonResult = twitter.search(q=self.query, **self.qParams)
 		self.result = jsonResult
 
 

@@ -73,12 +73,12 @@ def tweetTokenize(text):
 	text = str(text).lower()
 	tknzr = TweetTokenizer(reduce_len=True)
 	tokens = tknzr.tokenize(text)
-	replacer = {"&":"and", '+':'plus', '@':'at', '/':'slash', '\\':'slash'}
+	replacer = {"&":"and", '+':'plus', '@':'at', '/':'slash', '\\':'slash', '=':'equals'}
 	tokens = [replacer[t] if t in replacer else t for t in tokens]
 	# for badChar, goodChar in replacer.items():
 	# 	tokens = [goodChar if t == badChar else t for t in tokens]
-	badTokens = '\#$&\'()*-/1234567890\"[]\\<>'
-	tokens = [t for t in tokens if t in badTokens]
+	badTokens = '\#$&\'()*-/1234567890\"[]\\<>?'
+	tokens = [t for t in tokens if t not in badTokens]
 	return tokens
 
 def stem(tokens):

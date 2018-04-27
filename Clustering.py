@@ -56,6 +56,7 @@ def cluster(eFrame: EmojiFrame):
 
 def tweetTokenize(text):
 	text = str(text).lower()
+	text = re.sub("'", "", text)
 	tknzr = TweetTokenizer(reduce_len=True)
 	tokens = tknzr.tokenize(text)
 	replacer = {"&":"and", '+':'plus', '@':'at', '/':'slash', '\\':'slash', '=':'equals'}

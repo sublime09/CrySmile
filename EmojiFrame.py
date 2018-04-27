@@ -1,6 +1,7 @@
 import re, os, pandas, pickle
 from pandas import DataFrame, read_pickle
 from CSutils import emojiDict, ask, cleanTweet, millis
+from QueryTwitter import getRawTwitterDataFrames
 
 saveFolder = os.path.join('.', 'data', 'EmojiFrames')
 
@@ -21,15 +22,14 @@ def main():
 		for ef in eFrames:
 			print("EmojiFrame:", ef.emojiName, "shape is", ef.frame.shape)
 
-def getEmojiFramesFromRaw():
-	rawsFolder = os.path.join('.', 'data', 'RawTwitterDataframes')
-	rawFilenames = os.listdir(path=rawsFolder)
-	for fname in rawFilenames:
+def getEmojiFramesFromRawDFs():
+	for fname, df in getRawTwitterDataFrames():
 		emojiName = fname.split('.')[0]
 		if emojiName in emojiDict:
-			rawFrame = read_pickle(os.path.join(rawsFolder, fname))
-			ef = EmojiFrame(emojiName, rawFrame)
+			ef = EmojiFrame(emojiName, df)
 			yield ef
+		else:
+			print("Can't tell if emoji:", fname)
 
 def getAllEmojiFrames():
 	efFiles = os.listdir(path=saveFolder)

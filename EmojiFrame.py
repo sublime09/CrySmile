@@ -60,10 +60,10 @@ class EmojiFrame:
 		return self.getCleanTweets().values.tolist()
 
 	def dropDuplicateTweets(self):
-		grandTotalTweets = self.frame.shape[0]
+		original = self.frame.shape[0]
 		self.frame.drop_duplicates(subset='cleanTweet', inplace=True)
-		droppedTweets = grandTotalTweets - self.frame.shape[0]
-		print("Dropped", droppedTweets, "duplicate tweets")
+		now = self.frame.shape[0]
+		print("Dropping duplicates: %s -> %s tweets" % (original, now))
 
 	def save(self, filepath=None):
 		if filepath == None:

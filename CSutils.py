@@ -5,13 +5,14 @@ from twython import Twython
 # This is the name of an emoji followed its symbol
 emojiDict = dict()
 emojiDict['CrySmile']   = '😂'
-emojiDict['LoudCry']    = '😭'
 emojiDict['Cry']        = '😢'
+emojiDict['Coffee']     = '☕'
+emojiDict['LoudCry']    = '😭'
 emojiDict['SmileSmile'] = '😊'
 emojiDict['Fire']       = '🔥'
 emojiDict['ThumbsUp']   = '👍'
 emojiDict['Heart']      = '❤'
-emojiDict['Coffee']     = '☕'
+emojiDict['Shrug']      = '🤷'
 
 twitter = None
 

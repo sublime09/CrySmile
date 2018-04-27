@@ -8,11 +8,12 @@ saveFolder = os.path.join('.', 'data', 'EmojiFrames')
 def main():
 	if ask("Make NEW EmojiFrames from raw DataFrames? (WARN: file collision causes overwrite)"):
 		for eFrame in getEmojiFramesFromRawDFs():
+			skip = ask("Skip all the prompts and just save automatically?")
 			print("NEW EmojiFrame:", eFrame.emojiName, end='')
 			print(" shape is", eFrame.frame.shape)
-			if ask("Print this", eFrame.emojiName, "EmojiFrame?"):
+			if not skip and ask("Print this", eFrame.emojiName, "EmojiFrame?"):
 				print(eFrame)
-			if ask("Save this", eFrame.emojiName, "EmojiFrame?"):
+			if skip or ask("Save this", eFrame.emojiName, "EmojiFrame?"):
 				eFrame.save()
 	if ask("See existing EmojiFrames?"):
 		start = millis()

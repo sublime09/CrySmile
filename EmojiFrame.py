@@ -5,15 +5,15 @@ from CSutils import emojiDict, ask, cleanTweet, millis
 saveFolder = os.path.join('.', 'data', 'EmojiFrames')
 
 def main():
-	if ask("Make NEW EmojiFrames?"):
-		for eFrame in getEmojiFramesFromRaw():
-			print("NEW EmojiFrame:", eFrames.emojiName, end='')
+	if ask("Make NEW EmojiFrames from raw DataFrames? (WARN: file collision causes overwrite)"):
+		for eFrame in getEmojiFramesFromRawDFs():
+			print("NEW EmojiFrame:", eFrame.emojiName, end='')
 			print(" shape is", eFrame.frame.shape)
 			if ask("Print this EmojiFrame?"):
 				print(eFrame)
 				if ask("Save this EmojiFrame?"):
 					eFrame.save()
-	elif ask("See existing EmojiFrames?"):
+	if ask("See existing EmojiFrames?"):
 		start = millis()
 		print("Loading EmojiFrames takes... ", end='')
 		eFrames = list(getAllEmojiFrames())

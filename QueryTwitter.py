@@ -2,7 +2,7 @@ import os, time
 from itertools import cycle
 from twython import Twython
 from pandas import DataFrame, read_pickle
-from CSutils import emojiDict, getTwitter, ask
+from CSutils import emojiDict, getTwitter, ask, millis
 
 # ''' ########### REMEMBER: #################'''
 # '''MAX Number of Search Requests within 15-min window: 450'''
@@ -13,9 +13,9 @@ saveFolder = os.path.join('.', 'data', 'RawTwitterDataframes')
 rawDFFilenames = os.listdir(path=saveFolder)
 
 def main():
-	if ask("Do Twitter Query Process?"):
+	if ask("Query Twitter for Emojis?"):
 		print("EmojiDict=", emojiDict)
-		queryTime = int(input("Enter seconds of query process:"))
+		queryTime = int(input("Enter seconds of duration (zero is forever):"))
 		doQueryProcess(queryTime)
 	elif ask("View available raw Twitter Dataframes?"):
 		print("Raw Twitter DataFrames:")
@@ -82,25 +82,32 @@ class QueryTwitter:
 		print("Done!")
 
 
-
-def doQueryProcess(processTime=3600):
-	maxQsecRate = (400 / 15.0) / 60.0
-	totalQueries = int(maxQsecRate * processTime)
-	sleepSeconds = processTime / float(totalQueries)
+def doQueryProcess(duration=0):
+	# MAX ALLOWED: 400 queries within 15 minutes
+	sleepPerQuery = (15.0 / 400) * 60 
 	emojiDictCycler = cycle(emojiDict.items())
+	firstEmojiName = next(iter(emojiDict.values()))[0]
 
-	# emojiNames = list(emojiDict.keys())
-
-	if ask("Do", totalQueries, "queries over", processTime, "seconds?"):
-		for qNum in range(totalQueries):
+	dStr = "forever" if duration == 0 else str(duration) + " seconds"
+	if ask("Query Twitter every", sleepPerQuery, "seconds for", dStr):
+		end = millis() + 1000 * duration
+		errorsInRow = 0
+		while duration == 0 or millis() < end:
 			emojiName, emojiSymbol = next(emojiDictCycler)
-			# emojiNum = qNum % len(emojiNames)
-			# emojiName = emojiNames[emojiNum]
-			# emojiSearchTerm = emojiDict[emojiName]
 			qt = QueryTwitter(emojiName, emojiSymbol)
-			qt.doQuery()
-			qt.saveDataFrame()
-			time.sleep(sleepSeconds)
+			try:
+				qt.doQuery()
+				qt.saveDataFrame()
+				errorsInRow = 0
+			except Exception as e:
+				print("ERROR:", e)
+				errorsInRow += 1
+			if emojiName == firstEmojiName:
+				print("Press Ctrl+c to exit at any time")
+			if errorsInRow == 10:
+				print("Too many errors in a row!!!  We should exit...")
+				exit(1)
+			time.sleep(sleepPerQuery)
 		print("Finished!!!!!")
 	else:
 		print("Cancelled")

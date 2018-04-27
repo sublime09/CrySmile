@@ -13,8 +13,10 @@ emojiDict['ThumbsUp']   = '👍'
 emojiDict['Heart']      = '❤'
 emojiDict['Coffee']     = '☕'
 
+twitter = None
+
 def ask(*question):
-	print(*question)
+	print(*question, end='?\n')
 	response = input("(yes/no) >>> ")
 	response = response.strip().lower()
 	if response not in ['yes', 'no']:
@@ -24,18 +26,19 @@ def ask(*question):
 def millis():
 	return round(time() * 1000)
 
-def getTwitter():
-	# reading the secrets....
-	secretFilename = 'secret.txt'
-	try:
-		with open(secretFilename, 'r') as f:
-			APP_KEY = f.readline().strip()
-			APP_SECRET = f.readline().strip()
-			ACCESS_TOKEN = f.readline().strip()
-		twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
-	except Exception as e:
-		print("Missing or invalid", secretFilename, "... exiting...")
-		exit()
+def getTwitter(twitter=twitter):
+	if twitter == None:
+		# reading the secrets....
+		secretFilename = 'secret.txt'
+		try:
+			with open(secretFilename, 'r') as f:
+				APP_KEY = f.readline().strip()
+				APP_SECRET = f.readline().strip()
+				ACCESS_TOKEN = f.readline().strip()
+			twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
+		except Exception as e:
+			print("Missing or invalid", secretFilename, "... exiting...")
+			exit()
 	return twitter
 
 def cleanTweet(tweet: str):

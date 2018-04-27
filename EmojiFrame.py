@@ -10,10 +10,10 @@ def main():
 		for eFrame in getEmojiFramesFromRawDFs():
 			print("NEW EmojiFrame:", eFrame.emojiName, end='')
 			print(" shape is", eFrame.frame.shape)
-			if ask("Print this EmojiFrame?"):
+			if ask("Print this", eFrame.emojiName, "EmojiFrame?"):
 				print(eFrame)
-				if ask("Save this EmojiFrame?"):
-					eFrame.save()
+			if ask("Save this", eFrame.emojiName, "EmojiFrame?"):
+				eFrame.save()
 	if ask("See existing EmojiFrames?"):
 		start = millis()
 		print("Loading EmojiFrames takes... ", end='')

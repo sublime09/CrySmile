@@ -12,6 +12,7 @@ def main():
 	QueryTwitter.main()
 	EF.main()
 	Clustering.main()
+	print("Cry Smile is done!")
 
 
 if __name__ == '__main__':

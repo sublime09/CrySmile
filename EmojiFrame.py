@@ -17,7 +17,7 @@ def main():
 	if ask("See existing EmojiFrames?"):
 		start = millis()
 		print("Loading EmojiFrames takes... ", end='')
-		eFrames = list(getAllEmojiFrames())
+		eFrames = list(getExistingEmojiFrames())
 		print(millis()-start, "ms", sep='')
 		for ef in eFrames:
 			print("EmojiFrame:", ef.emojiName, "shape is", ef.frame.shape)
@@ -31,7 +31,7 @@ def getEmojiFramesFromRawDFs():
 		else:
 			print("Can't tell if emoji:", fname)
 
-def getAllEmojiFrames():
+def getExistingEmojiFrames():
 	efFiles = os.listdir(path=saveFolder)
 	eFrames = list()
 	for fname in efFiles:

@@ -7,14 +7,13 @@ from nltk.tokenize import TweetTokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 # import mpld3 # for visualization
-from EmojiFrame import EmojiFrame, getAllEmojiFrames
+from EmojiFrame import EmojiFrame, getExistingEmojiFrames
 from CSutils import millis, ask
 
 def main():
 	if ask("Try clustering of EmojiFrames?"):
-		eFrames = getAllEmojiFrames()
-		for ef in eFrames:
-			print("EmojiFrame:", ef.emojiName)
+		for ef in getExistingEmojiFrames():
+			print("Now clustering the EmojiFrame:", ef.emojiName)
 			cluster(ef)
 
 

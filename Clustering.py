@@ -81,21 +81,5 @@ def tweetTokenize(text):
 	tokens = [t for t in tokens if t not in badTokens]
 	return tokens
 
-def stem(tokens):
-	stemmer = nltk.stem.snowball.SnowballStemmer("english")
-	stems = [stemmer.stem(t) for t in tokens]
-	return stems
-
-def basicTokenize(text):
-	# first tokenize by sentence, then by word to ensure that punctuation is caught as it's own token
-	text = str(text).replace("\'", "")
-	# TODO: add to preprocessing.  apostrophes are too much to handle
-	tokens = [word.lower() for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
-
-	filtered_tokens = []
-	# filter out any tokens not containing letters (e.g., numeric tokens, raw punctuation)
-	tokens = [t for t in tokens if re.search('[a-zA-Z]', t)]
-	return tokens
-
 if __name__ == '__main__':
 	main()

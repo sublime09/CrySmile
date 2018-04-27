@@ -1,4 +1,5 @@
 import os, time
+from itertools import cycle
 from twython import Twython
 from pandas import DataFrame, read_pickle
 from CSutils import emojiDict, getTwitter, ask
@@ -13,6 +14,7 @@ rawDFFilenames = os.listdir(path=saveFolder)
 
 def main():
 	if ask("Do Twitter Query Process?"):
+		print("EmojiDict=", emojiDict)
 		queryTime = int(input("Enter seconds of query process:"))
 		doQueryProcess(queryTime)
 	elif ask("View available raw Twitter Dataframes?"):
@@ -85,18 +87,21 @@ def doQueryProcess(processTime=3600):
 	maxQsecRate = (400 / 15.0) / 60.0
 	totalQueries = int(maxQsecRate * processTime)
 	sleepSeconds = processTime / float(totalQueries)
-	emojiNames = list(emojiDict.keys())
+	emojiDictCycler = cycle(emojiDict.items())
+
+	# emojiNames = list(emojiDict.keys())
 
 	if ask("Do", totalQueries, "queries over", processTime, "seconds?"):
 		for qNum in range(totalQueries):
-			emojiNum = qNum % len(emojiNames)
-			emojiName = emojiNames[emojiNum]
-			emojiSearchTerm = emojiDict[emojiName]
-			query = QueryTwitter(emojiName, emojiSearchTerm)
-			query.doQuery()
-			query.saveDataFrame()
+			emojiName, emojiSymbol = next(emojiDictCycler)
+			# emojiNum = qNum % len(emojiNames)
+			# emojiName = emojiNames[emojiNum]
+			# emojiSearchTerm = emojiDict[emojiName]
+			qt = QueryTwitter(emojiName, emojiSymbol)
+			qt.doQuery()
+			qt.saveDataFrame()
 			time.sleep(sleepSeconds)
-		print("finished!!!!!")
+		print("Finished!!!!!")
 	else:
 		print("Cancelled")
 

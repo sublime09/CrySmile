@@ -1,4 +1,4 @@
-import re, os, codecs, pickle
+import re, os, codecs, sys
 import numpy
 import pandas
 import nltk
@@ -20,10 +20,8 @@ def main():
 
 def cluster(eFrame: EmojiFrame):
 	# dropping duplicate tweets (Retweets) removes half of tweets
-	grandTotalTweets = eFrame.frame.shape[0]
-	eFrame.frame.drop_duplicates(subset='cleanTweet', inplace=True)
-	droppedTweets = eFrame.frame.shape[0] - grandTotalTweets
-	print("Dropped", droppedTweets, "duplicate tweets")
+	eFrame.dropDuplicateTweets()
+	# TODO: tweet tokenize; THEN drop punctuation
 
 	# ids = eFrame.frame['tweetID'].values.tolist()
 	# cleanTweets = eFrame.frame['cleanTweet'].values.tolist()

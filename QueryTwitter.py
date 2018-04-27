@@ -8,12 +8,27 @@ from CSutils import emojiDict, getTwitter, ask
 # '''We will get BLACKLISTED if we abuse the Twitter API'''
 # ''' The secret file is NOT PUBLIC to avoid abuse of our Twitter access by attackers'''
 
+saveFolder = os.path.join('.', 'data', 'RawTwitterDataframes')
+rawDFFilenames = os.listdir(path=saveFolder)
+
 def main():
-	if ask("Do Full Query Process?"):
+	if ask("Do Twitter Query Process?"):
 		queryTime = int(input("Enter seconds of query process:"))
 		doQueryProcess(queryTime)
-	elif ask("Do Small QueryTwitter Test?"):
-		smallTest()
+	elif ask("View available raw Twitter Dataframes?"):
+		print("Raw Twitter DataFrames:")
+		for fname, rawFrame in getRawTwitterDataFrames():
+			print(fname, "shape is", rawFrame.shape)
+		print("Done!")
+	# elif ask("Do Small QueryTwitter Test?"):
+	# 	smallTest()
+
+
+def getRawTwitterDataFrames():
+	for fname in rawDFFilenames:
+		filepath = os.path.join(folder, fname)
+		rawFrame = read_pickle(filepath)
+		yield (fname, rawFrame)
 
 
 class QueryTwitter:
@@ -52,7 +67,7 @@ class QueryTwitter:
 	def saveDataFrame(self, filepath=None):
 		df = self.getDataFrame()
 		if filepath == None:
-			filepath = os.path.join('data', 'RawTwitterDataframes', self.name+'.p')
+			filepath = os.path.join(saveFolder, self.name + '.p')
 		if os.path.isfile(filepath):
 			print("Saving UPDATE", filepath, "...", end='')
 			oldDF = read_pickle(filepath)

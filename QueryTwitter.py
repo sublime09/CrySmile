@@ -74,22 +74,21 @@ class QueryTwitter:
 		filepath = os.path.join(folder, filename)
 		df = self.getDataFrame()
 		if os.path.isfile(filepath):
-			print("Saving UPDATE", filename, "...", end='')
+			print("Saving UPDATE", filename.ljust(20), "..." , end='')
 			oldDF = read_pickle(filepath)
 			df = df.append(oldDF)
 		else:
 			print("Saving NEW", filepath, "...", end='')
 		df.drop_duplicates(subset='id', inplace=True)
-		print("shape is", df.shape, end=' ')
 		df.to_pickle(filepath)
-		print("Done!")
+		print("Done! shape is", df.shape)
 
 
 def doQueryProcess(duration=0):
 	# MAX ALLOWED: 400 queries within 15 minutes
 	sleepPerQuery = (15.0 / 400) * 60 
 	emojiDictCycler = cycle(emojiDict.items())
-	firstEmojiName = next(iter(emojiDict.values()))[0]
+	firstEmojiName = list(emojiDict.keys())[0]
 
 	dStr = "forever" if duration == 0 else str(duration) + " seconds"
 	if ask("Query Twitter every", sleepPerQuery, "seconds for", dStr):

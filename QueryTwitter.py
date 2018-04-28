@@ -1,4 +1,4 @@
-import os, time
+import os, time, sys
 from itertools import cycle
 from twython import Twython
 from pandas import DataFrame, read_pickle
@@ -74,7 +74,7 @@ class QueryTwitter:
 		filepath = os.path.join(folder, filename)
 		df = self.getDataFrame()
 		if os.path.isfile(filepath):
-			print("Saving UPDATE", filename.ljust(20), "..." , end='')
+			print("Saving UPDATE", filename.ljust(12), "..." , end='')
 			oldDF = read_pickle(filepath)
 			df = df.append(oldDF)
 		else:
@@ -99,6 +99,8 @@ def doQueryProcess(duration=0):
 			qt = QueryTwitter(emojiName, emojiSymbol)
 			try:
 				qt.doQuery()
+				print("Saving...", end='\r')
+				sys.stdout.flush()
 				qt.saveDataFrame()
 				errorsInRow = 0
 			except Exception as e:
@@ -109,6 +111,8 @@ def doQueryProcess(duration=0):
 			if errorsInRow == 10:
 				print("Too many errors in a row!!!  We should exit...")
 				exit(1)
+			print("Sleeping...", end='\r')
+			sys.stdout.flush()
 			time.sleep(sleepPerQuery)
 		print("Finished!!!!!")
 	else:

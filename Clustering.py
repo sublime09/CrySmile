@@ -35,21 +35,6 @@ def cluster(eFrame: EmojiFrame):
 	eFrame.frame['setmmedTokens'] = stemmedCol
 	eFrame.frame['tweetTokens'] = twTokenCol
 
-	# tokenVocab = set()
-	# stemmedVocab = set()
-	# tweetVocab = set()
-	# for tokens in eFrame.frame['basicTokens']:
-	# 	tokenVocab.update(tokens)
-	# for tokens in eFrame.frame['setmmedTokens']:
-	# 	stemmedVocab.update(tokens)
-	# for tokens in eFrame.frame['tweetTokens']:
-	# 	tweetVocab.update(tokens)
-	# #vocab_frame = pandas.DataFrame({'words': tokenVocab}, index = stemmedVocab)
-	# print('There are', str(vocab_frame.shape[0]), 'items in vocab_frame')
-	# print("Basic Token vocab:", len(tokenVocab))
-	# print("Stemmed vocab:", len(stemmedVocab))
-	# print("Tweet vocab:", len(tweetVocab))
-
 	cleanTweetsList = [str(x) for x in eFrame.getCleanTweetsList()]
 
 	start = millis()
@@ -71,6 +56,7 @@ def cluster(eFrame: EmojiFrame):
 
 def tweetTokenize(text):
 	text = str(text).lower()
+	text = re.sub("'", "", text)
 	tknzr = TweetTokenizer(reduce_len=True)
 	tokens = tknzr.tokenize(text)
 	replacer = {"&":"and", '+':'plus', '@':'at', '/':'slash', '\\':'slash', '=':'equals'}
@@ -79,22 +65,6 @@ def tweetTokenize(text):
 	# 	tokens = [goodChar if t == badChar else t for t in tokens]
 	badTokens = '\#$&\'()*-/1234567890\"[]\\<>?'
 	tokens = [t for t in tokens if t not in badTokens]
-	return tokens
-
-def stem(tokens):
-	stemmer = nltk.stem.snowball.SnowballStemmer("english")
-	stems = [stemmer.stem(t) for t in tokens]
-	return stems
-
-def basicTokenize(text):
-	# first tokenize by sentence, then by word to ensure that punctuation is caught as it's own token
-	text = str(text).replace("\'", "")
-	# TODO: add to preprocessing.  apostrophes are too much to handle
-	tokens = [word.lower() for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
-
-	filtered_tokens = []
-	# filter out any tokens not containing letters (e.g., numeric tokens, raw punctuation)
-	tokens = [t for t in tokens if re.search('[a-zA-Z]', t)]
 	return tokens
 
 if __name__ == '__main__':

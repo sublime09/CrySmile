@@ -30,14 +30,19 @@ def getRawTwitterDataFrames():
 	for fname in rawDFFilenames:
 		if fname.split('.')[0] in emojiDict:
 			filepath = os.path.join(saveFolder, fname)
-			rawFrame = read_pickle(filepath)
-			yield (fname, rawFrame)
+			try:
+				rawFrame = read_pickle(filepath)
+				yield (fname, rawFrame)
+			except Exception as e:
+				print("Error in reading as DataFrame:", fname)
+				print("Error: ", e)
+				print("Skipping...")
+				continue
 		else:
 			print("Can't tell if emoji:", fname)
 
 
 class QueryTwitter:
-	twitter = getTwitter()
 	# default parameters for a query:
 	qParams = dict(count='100', \
 		lang='en', \
@@ -54,7 +59,8 @@ class QueryTwitter:
 	def doQuery(self):
 		# self.qParams['q'] = self.query
 		self.result = 111
-		jsonResult = self.twitter.search(q=self.query, **self.qParams)
+		twitter = getTwitter()
+		jsonResult = twitter.search(q=self.query, **self.qParams)
 		self.result = jsonResult
 
 

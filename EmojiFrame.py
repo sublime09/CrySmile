@@ -39,8 +39,13 @@ def getExistingEmojiFrames():
 		if re.match("ef_.*\\.p", fname):
 			filepath = os.path.join(saveFolder, fname)
 			with open(filepath, 'rb') as fileObj:
-				eFrame = pickle.load(fileObj)	
-				yield eFrame
+				try:
+					eFrame = pickle.load(fileObj)
+					yield eFrame
+				except Exception as e:
+					print("Error while loading EmojiFrame:", fname)
+					print("Error:", e)
+					print("Skipping".ljust(70, "."))
 
 class EmojiFrame:
 	def __init__(self, emojiName, rawDataFrame):
@@ -88,11 +93,6 @@ class EmojiFrame:
 		rawTweets = rawFrame['full_text']
 		goodData['rawTweet'] = rawTweets
 		goodData['userName'] = [d['screen_name'] for d in rawFrame['user']]
-		# try:
-		# 	goodData['rtID'] = rawFrame["retweeted_status"]["id"]
-		# 	goodData['rtContext'] = rawFrame["retweeted_status"]["full_text"]
-		# except:
-		# 	pass
 		goodData['cleanTweet'] = [cleanTweet(t) for t in rawTweets]
 		goodData['isRetweet'] = ["RT " in t for t in rawTweets]
 		return goodData

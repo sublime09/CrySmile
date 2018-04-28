@@ -65,3 +65,10 @@ def printDictLevels(d, base=''):
 			printDictLevels(d[key], base+"["+key+"]")
 		else:
 			print(base, ":", d[key], sep='')
+
+def wrapper(func, *args, **kwargs):
+	def wrapped():
+		return func(*args, **kwargs)
+	return wrapped
+
+	

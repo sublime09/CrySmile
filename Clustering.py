@@ -32,10 +32,6 @@ def main():
 		return
 
 def plot2DusingMDS(matrix, clusters):
-	import matplotlib.pyplot as plt
-	import matplotlib as mpl
-	from sklearn.manifold import MDS
-	from sklearn.metrics.pairwise import cosine_similarity
 
 	# this is for printing out to 2d matplotlib plots!
 	precomputeDissimilarity = True
@@ -55,9 +51,6 @@ def plot2DusingMDS(matrix, clusters):
 
 
 def clusterMeanShift(matrix):
-	from sklearn.cluster import MeanShift, estimate_bandwidth
-	import matplotlib.pyplot as plt
-	from itertools import cycle
 	matrix = matrix.toarray() #must be dense array
 	# The following bandwidth can be automatically detected using
 	bandwidth = estimate_bandwidth(matrix, quantile=0.03, n_samples=1000)

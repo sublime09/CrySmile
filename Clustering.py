@@ -80,30 +80,38 @@ def doMDSandPlot(title, simMatrix, clusterResults):
 
 def clusterMeanShift(matrix):
 	matrix = matrix.toarray() #must be dense array
+	samples = matrix.shape[0]
+
 	# The following bandwidth can be automatically detected using
-	bandwidth = estimate_bandwidth(matrix, quantile=0.03, n_samples=1000)
-	print("My bandwidth:", bandwidth)
-	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True, random_state=1)
+	opts = dict(quantile=0.023, n_samples=1000, random_state=1, n_jobs=-2)
+	bandwidth = estimate_bandwidth(matrix, **opts)
+	# print("My bandwidth:", bandwidth)
+	ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
+	print("MeanShift fitting in progress...", end='')
 	ms.fit(matrix)
+	print("Done!")
 	labels = ms.labels_
 	cluster_centers = ms.cluster_centers_
 	labels_unique = np.unique(labels)
 	nClusters = len(labels_unique)
-	print("Bandwidth= %d forms %s clusters" % (bandwidth, nClusters))
 
 	""" Plot results of MeanShift
 	plt.figure(1)
 	plt.clf()
 	colors = cycle('bgrcmykbgrcmykbgrcmykbgrcmyk')
-	for k, col in zip(range(n_clusters_), colors):
-	    my_members = labels == k
-	    cluster_center = cluster_centers[k]
-	    plt.plot(X[my_members, 0], X[my_members, 1], col + '.')
-	    plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
-	             markeredgecolor='k', markersize=14)
-	plt.title('Estimated number of clusters: %d' % n_clusters_)
+	for k, col in zip(range(nClusters), colors):
+		my_members = labels == k
+		cluster_center = cluster_centers[k]
+		plt.plot(matrix[my_members, 0], matrix[my_members, 1], col + '.')
+		plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
+				 markeredgecolor='k', markersize=14)
+	plt.title('Estimated number of clusters: %d' % nClusters)
 	plt.show()
 	# """
+	
+	outs = samples, bandwidth, nClusters
+	print("Samples=%s Bandwidth=%s Clusters=%s" % outs)
+	return ms
 
 
 def getTFIDFmatrix(eFrame: EmojiFrame):

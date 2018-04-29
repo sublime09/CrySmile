@@ -24,6 +24,8 @@ from CSutils import millis, ask, wrapper
 def main():
 	# if ask("Try clustering of EmojiFrames?"):
 	for eFrame in getExistingEmojiFrames():
+		oldDF = eFrame.frame
+		eFrame.frame = eFrame.frame.iloc[0:2000]
 		try:
 			print("EmojiFrame: ", eFrame.emojiName, "shape=", eFrame.shape(), "Analysis:::")
 			tfidf_matrix = getTFIDFmatrix(eFrame)
@@ -33,12 +35,14 @@ def main():
 			# print("BayesianGaussianMixture with prior Dirichlet clustering...")
 			# clusterVBGMM(tfidf_matrix)
 			print("MDS example...")
-			title = "EmojiFrame: "+eFrame.emojiName
+			numClusters = len(clusterResults.cluster_centers_)
+			title = "EmojiFrame: %s MeanShift : %s clusters" % (eFrame.emojiName, numClusters)
 			doMDSandPlot(title, simMatrix, clusterResults)
 			print("Taking break...")
 		except Exception as e:
 			print("EmojiFrame", eFrame.emojiName, "FAILED and will skip:")
 			print(e.message)
+		eFrame.frame = oldDF
 
 
 def doMDSandPlot(title, simMatrix, clusterResults):
@@ -64,7 +68,7 @@ def doMDSandPlot(title, simMatrix, clusterResults):
 	colors = cm.rainbow(np.linspace(0, 1, len(uniques))) 
 
 	fig = plt.figure(1)
-	fig.suptitle(title, fontsize=20)
+	fig.suptitle(title, fontsize=15)
 	plt.scatter(xs, ys, c=colors, s=15, lw=0, label='MDS')
 	plt.show()
 

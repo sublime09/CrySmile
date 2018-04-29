@@ -85,11 +85,8 @@ def clusterMeanShift(matrix):
 	# """
 
 
-def getTweet2VecMatrix():
-	raise NotImplementedError
-
-
 def getTFIDFmatrix(eFrame: EmojiFrame):
+	# import nltk
 	# nltk.download('stopwords') # NEEDED ON FIRST RUN
 	# nltk.download('punkt') # NEEDED ON FIRST RUN
 	cleanTweetsList = [str(x) for x in eFrame.getCleanTweetsList()]
@@ -103,20 +100,6 @@ def getTFIDFmatrix(eFrame: EmojiFrame):
 	tfidf_vectorizer = TfidfVectorizer(**opts)
 	tfidf_matrix = tfidf_vectorizer.fit_transform(cleanTweetsList)
 	return tfidf_matrix
-
-
-def cluster(eFrame: EmojiFrame):
-
-
-	print("TFIDF matrix shape is", tfidf_matrix.shape)
-	# print(tfidf_matrix)
-
-	clusterMeanShift(tfidf_matrix)
-
-	# terms = tfidf_vectorizer.get_feature_names()
-	# print(terms[:20])
-
-
 
 def tweetTokenize(text):
 	text = str(text).lower()

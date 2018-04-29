@@ -50,6 +50,34 @@ def plot2DusingMDS(matrix, clusters):
 		df = pd.DataFrame(dict(x=xs, y=ys, label=clusters, title=titles)) 
 
 
+def doMDSandPlot(title, simMatrix, clusterResults):
+	n_samples = simMatrix.shape[0]
+	print("Doing MDS with", n_samples, "samples")
+
+	seed = np.random.RandomState(seed=1)
+	opts = dict(n_components=2, max_iter=300, eps=1e-3, random_state=seed,
+					   dissimilarity="precomputed", n_jobs=-2)
+	mds = MDS(**opts)
+	print("MDS Fitting in progress...", end='')
+	pos = mds.fit(simMatrix).embedding_
+	print("Done!")
+
+	# Rotate the data
+	clf = PCA(n_components=2)
+	pos = clf.fit_transform(pos)
+
+	xs, ys = pos[:, 0], pos[:, 1]
+	labels = clusterResults.labels_
+	uniques = np.unique(labels)
+	
+	colors = cm.rainbow(np.linspace(0, 1, len(uniques))) 
+
+	fig = plt.figure(1)
+	fig.suptitle(title, fontsize=20)
+	plt.scatter(xs, ys, c=colors, s=15, lw=0, label='MDS')
+	plt.show()
+
+
 def clusterMeanShift(matrix):
 	matrix = matrix.toarray() #must be dense array
 	# The following bandwidth can be automatically detected using

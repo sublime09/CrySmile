@@ -41,7 +41,10 @@ def getExistingEmojiFrames():
 			with open(filepath, 'rb') as fileObj:
 				try:
 					eFrame = pickle.load(fileObj)
-					yield eFrame
+					if eFrame.emojiName in emojiDict:
+						yield eFrame
+					else:
+						print("Can't tell if emoji:", eFrame.emojiName)
 				except Exception as e:
 					print("Error while loading EmojiFrame:", fname)
 					print("Error:", e)

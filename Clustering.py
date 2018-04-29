@@ -1,14 +1,22 @@
 import re, os, codecs, sys
 import numpy as np
 import pandas as pd
-import nltk
 from timeit import timeit
+from itertools import cycle
 
 from nltk.tokenize import TweetTokenizer
+from scipy import linalg
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import MeanShift, estimate_bandwidth
+from sklearn.mixture import GaussianMixture, BayesianGaussianMixture
+from sklearn.manifold import MDS
+from sklearn.decomposition import PCA
 
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from matplotlib.patches import Ellipse
 
-# import mpld3 # for visualization
 from EmojiFrame import EmojiFrame, getExistingEmojiFrames
 from CSutils import millis, ask, wrapper
 

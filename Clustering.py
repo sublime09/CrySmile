@@ -24,30 +24,21 @@ from CSutils import millis, ask, wrapper
 def main():
 	# if ask("Try clustering of EmojiFrames?"):
 	for eFrame in getExistingEmojiFrames():
-		eFrame = next(getExistingEmojiFrames())
-		print("EmojiFrame: ", eFrame.emojiName, "shape=", eFrame.shape(), "Analysis:::")
-		vecMatrix = getTFIDFmatrix(eFrame)
-		print("MeanShift Clustering...")
-		cluster(eFrame)
-		return
-
-def plot2DusingMDS(matrix, clusters):
-
-	# this is for printing out to 2d matplotlib plots!
-	precomputeDissimilarity = True
-	df = None
-	if precomputeDissimilarity:
-		dist = 1 - cosine_similarity(tfidf_matrix)
-		mds = MDS(n_components=2, dissimilarity="precomputed", random_state=1)
-		pos = mds.fit_transform(dist)  # shape (n_components, n_samples)
-		xs, ys = pos[:, 0], pos[:, 1]
-		df = pd.DataFrame(dict(x=xs, y=ys, label=clusters, title=titles)) 
-	else:
-		mds = MDS(n_components=2, random_state=1)
-		raise "Shape problem here?"
-		pos = mds.fit_transform(matrix)  # shape (n_components, n_samples)
-		xs, ys = pos[:, 0], pos[:, 1]
-		df = pd.DataFrame(dict(x=xs, y=ys, label=clusters, title=titles)) 
+		try:
+			print("EmojiFrame: ", eFrame.emojiName, "shape=", eFrame.shape(), "Analysis:::")
+			tfidf_matrix = getTFIDFmatrix(eFrame)
+			simMatrix = 1 - cosine_similarity(tfidf_matrix)
+			print("MeanShift Clustering...")
+			clusterResults = clusterMeanShift(tfidf_matrix)
+			# print("BayesianGaussianMixture with prior Dirichlet clustering...")
+			# clusterVBGMM(tfidf_matrix)
+			print("MDS example...")
+			title = "EmojiFrame: "+eFrame.emojiName
+			doMDSandPlot(title, simMatrix, clusterResults)
+			print("Taking break...")
+		except Exception as e:
+			print("EmojiFrame", eFrame.emojiName, "FAILED and will skip:")
+			print(e.message)
 
 
 def doMDSandPlot(title, simMatrix, clusterResults):
